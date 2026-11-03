@@ -1,0 +1,1050 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050505">
+<title>Getmodtool | 3D Live Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #050505;
+    --panel: #101010;
+    --white: #ffffff;
+    --silver: #c9c9c9;
+    --muted: #858585;
+    --line: rgba(255,255,255,.13);
+    --glass: rgba(255,255,255,.045);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Inter', sans-serif;
+    color: var(--white);
+    background:
+        radial-gradient(ellipse at 50% 0%, #292929 0%, transparent 48%),
+        radial-gradient(ellipse at 0% 100%, #171717 0%, transparent 40%),
+        #050505;
+}
+
+/* PARTICLE BACKGROUND */
+
+#particles {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* BACKGROUND LIGHT */
+
+.background-glow {
+    position: fixed;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    background: #ffffff;
+    filter: blur(150px);
+    opacity: .055;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glow-one {
+    top: -150px;
+    left: -100px;
+}
+
+.glow-two {
+    right: -150px;
+    bottom: -150px;
+}
+
+/* MAIN */
+
+.container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 780px;
+    margin: auto;
+    padding: 35px 18px 45px;
+}
+
+/* BRAND */
+
+.brand {
+    text-align: center;
+    margin-bottom: 32px;
+    perspective: 800px;
+}
+
+.crown {
+    font-size: 35px;
+    color: #fff;
+    text-shadow: 0 0 25px #ffffff80;
+    animation: crownFloat 3s ease-in-out infinite;
+}
+
+.logo {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: clamp(65px, 12vw, 90px);
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: -6px;
+    color: transparent;
+    background: linear-gradient(
+        180deg,
+        #ffffff 5%,
+        #d4d4d4 35%,
+        #777777 60%,
+        #ffffff 85%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    filter: drop-shadow(0 12px 12px #000);
+    transform: rotateX(8deg);
+}
+
+.brand-name {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: #fff;
+    text-shadow: 0 3px 15px #ffffff50;
+}
+
+.tagline {
+    margin-top: 9px;
+    color: #999;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 5px;
+}
+
+/* LIVE BADGE */
+
+.top-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 17px;
+    padding: 8px 17px;
+    border: 1px solid #ffffff35;
+    border-radius: 50px;
+    background: linear-gradient(145deg, #252525, #090909);
+    box-shadow:
+        0 7px 18px #000,
+        inset 0 1px 1px #ffffff25;
+    color: #eee;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.top-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 0 12px white;
+    animation: blink 1.2s infinite;
+}
+
+/* DASHBOARD 3D */
+
+.dashboard {
+    position: relative;
+    padding: 23px;
+    overflow: hidden;
+    border: 1px solid #ffffff24;
+    border-radius: 30px;
+    background: linear-gradient(
+        145deg,
+        rgba(43,43,43,.94),
+        rgba(13,13,13,.97) 45%,
+        rgba(29,29,29,.95)
+    );
+    box-shadow:
+        0 30px 70px #000,
+        0 12px 25px #000,
+        inset 0 1px 1px #ffffff30,
+        inset 0 -2px 10px #000;
+    backdrop-filter: blur(25px);
+    transform-style: preserve-3d;
+}
+
+.dashboard::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 12%;
+    width: 76%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #fff,
+        transparent
+    );
+    opacity: .7;
+}
+
+.dashboard::after {
+    content: "";
+    position: absolute;
+    top: -150px;
+    right: -130px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: #fff;
+    filter: blur(100px);
+    opacity: .06;
+    pointer-events: none;
+}
+
+/* SECTION COMMON */
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: #e9e9e9;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.heading-icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #ffffff35;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #3a3a3a, #101010);
+    box-shadow:
+        0 5px 10px #000,
+        inset 0 1px 1px #ffffff40;
+    color: white;
+    font-size: 19px;
+}
+
+/* PERIOD */
+
+.period-box {
+    position: relative;
+    padding: 20px;
+    border: 1px solid #ffffff24;
+    border-radius: 22px;
+    background: linear-gradient(145deg, #242424, #101010);
+    box-shadow:
+        0 12px 25px #0008,
+        inset 0 1px 1px #ffffff24,
+        inset 0 -4px 8px #000;
+}
+
+.period-number {
+    margin-top: 18px;
+    padding: 17px 10px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid #ffffff40;
+    border-radius: 15px;
+    background: linear-gradient(180deg, #050505, #202020);
+    box-shadow:
+        inset 0 5px 15px #000,
+        0 4px 10px #ffffff08;
+    color: #fff;
+    font-size: clamp(17px, 4vw, 27px);
+    font-weight: 900;
+    letter-spacing: 2px;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+/* TIMER */
+
+.live-timer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 13px 15px;
+    border: 1px solid #ffffff20;
+    border-radius: 15px;
+    background: linear-gradient(145deg, #1d1d1d, #090909);
+    box-shadow:
+        0 6px 12px #000,
+        inset 0 1px 1px #ffffff20;
+}
+
+.live-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #aaa;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 12px #fff;
+    animation: blink 1s infinite;
+}
+
+#liveTimer {
+    color: white;
+    font-size: 23px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 15px #fff8;
+}
+
+/* API STATUS */
+
+.api-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 23px 0;
+}
+
+.api-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #fff8);
+}
+
+.api-line:last-child {
+    background: linear-gradient(90deg, #fff8, transparent);
+}
+
+.api-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 19px;
+    border: 1px solid #ffffff35;
+    border-radius: 50px;
+    background: linear-gradient(145deg, #333, #101010);
+    box-shadow:
+        0 5px 15px #000,
+        inset 0 1px 1px #ffffff30;
+    color: #eee;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.api-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 0 10px white;
+}
+
+/* RESULT */
+
+.result-box {
+    position: relative;
+    padding: 27px 15px;
+    text-align: center;
+    border: 1px solid #ffffff28;
+    border-radius: 25px;
+    background:
+        radial-gradient(circle at 50% 35%, #292929, transparent 55%),
+        linear-gradient(145deg, #181818, #050505);
+    box-shadow:
+        0 15px 30px #000,
+        inset 0 1px 1px #ffffff20,
+        inset 0 -5px 15px #000;
+}
+
+.section-title {
+    margin-bottom: 26px;
+    color: #ddd;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 7px;
+}
+
+/* 3D RESULT ORB */
+
+.result-circle {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 185px;
+    height: 185px;
+    margin: auto;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 32% 25%, #ffffff 0%, #bcbcbc 8%, #454545 32%, #111 68%, #000 100%);
+    box-shadow:
+        0 0 0 7px #ffffff0b,
+        0 0 0 14px #ffffff08,
+        0 15px 25px #000,
+        0 0 35px #ffffff30,
+        inset 0 8px 18px #ffffff70,
+        inset 0 -15px 25px #000;
+    transform-style: preserve-3d;
+    animation: orbFloat 4s ease-in-out infinite;
+}
+
+.result-circle::before {
+    content: "";
+    position: absolute;
+    inset: -17px;
+    border: 1px solid #ffffff45;
+    border-radius: 50%;
+    animation: ringRotate 10s linear infinite;
+}
+
+.result-circle::after {
+    content: "";
+    position: absolute;
+    inset: -27px;
+    border: 1px dashed #ffffff25;
+    border-radius: 50%;
+    animation: ringRotate 18s linear infinite reverse;
+}
+
+.result-number {
+    position: relative;
+    z-index: 2;
+    color: #080808;
+    font-size: 100px;
+    font-weight: 900;
+    text-shadow:
+        0 2px 0 #fff,
+        0 5px 4px #0008;
+}
+
+.result-color {
+    display: inline-block;
+    min-width: 150px;
+    margin-top: 24px;
+    padding: 12px 25px;
+    border: 1px solid #ffffff70;
+    border-radius: 50px;
+    background: linear-gradient(180deg, #fff, #aaa);
+    box-shadow:
+        0 7px 15px #000,
+        inset 0 2px 3px #fff;
+    color: #050505;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+/* REFERENCE CARDS */
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 13px;
+    margin-top: 22px;
+}
+
+.color-card {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 17px 14px;
+    border: 1px solid #ffffff25;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #292929, #101010);
+    box-shadow:
+        0 8px 16px #000,
+        inset 0 1px 1px #ffffff20;
+    transition: transform .25s, box-shadow .25s;
+}
+
+.color-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow:
+        0 15px 25px #000,
+        inset 0 1px 1px #ffffff40;
+}
+
+.ball {
+    position: relative;
+    flex-shrink: 0;
+    width: 43px;
+    height: 43px;
+    border: 1px solid #ffffff70;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 25%, #fff, #aaa 35%, #333 70%, #050505);
+    box-shadow:
+        0 6px 10px #000,
+        inset 0 3px 5px #fff9,
+        inset 0 -5px 8px #000;
+}
+
+.ball::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 9px;
+    width: 10px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    filter: blur(2px);
+}
+
+.card-title {
+    margin-bottom: 5px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.card-subtitle {
+    color: #999;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* BUTTON */
+
+.result-button {
+    position: relative;
+    width: 100%;
+    margin-top: 25px;
+    padding: 18px;
+    overflow: hidden;
+    border: 1px solid #fff;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #fff, #c8c8c8 48%, #777);
+    box-shadow:
+        0 9px 0 #444,
+        0 15px 22px #000,
+        inset 0 2px 3px #fff;
+    color: #050505;
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.result-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 70%;
+    height: 100%;
+    transform: skewX(-25deg);
+    background: linear-gradient(90deg, transparent, #ffffffb0, transparent);
+    transition: .6s;
+}
+
+.result-button:hover::before {
+    left: 150%;
+}
+
+.result-button:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 12px 0 #444,
+        0 19px 25px #000,
+        inset 0 2px 3px #fff;
+}
+
+.result-button:active {
+    transform: translateY(5px);
+    box-shadow:
+        0 3px 0 #444,
+        0 6px 12px #000;
+}
+
+.result-button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* FOOTER */
+
+.footer {
+    margin-top: 25px;
+    text-align: center;
+    color: #999;
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.footer span {
+    color: white;
+}
+
+.demo-label {
+    margin-top: 10px;
+    color: #777;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+/* ANIMATIONS */
+
+@keyframes blink {
+    50% { opacity: .35; }
+}
+
+@keyframes orbFloat {
+    0%, 100% { transform: translateY(0) rotateX(0deg); }
+    50% { transform: translateY(-7px) rotateX(5deg); }
+}
+
+@keyframes ringRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes crownFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+}
+
+/* MOBILE */
+
+@media (max-width: 480px) {
+    .container {
+        padding: 22px 12px 35px;
+    }
+
+    .dashboard {
+        padding: 14px;
+        border-radius: 23px;
+    }
+
+    .period-box {
+        padding: 15px;
+    }
+
+    .period-number {
+        font-size: 16px;
+        letter-spacing: 1px;
+    }
+
+    .live-label {
+        font-size: 9px;
+        letter-spacing: .4px;
+    }
+
+    #liveTimer {
+        font-size: 19px;
+    }
+
+    .result-circle {
+        width: 155px;
+        height: 155px;
+    }
+
+    .result-number {
+        font-size: 82px;
+    }
+
+    .color-grid {
+        gap: 9px;
+    }
+
+    .color-card {
+        padding: 13px 9px;
+        gap: 9px;
+    }
+
+    .ball {
+        width: 35px;
+        height: 35px;
+    }
+
+    .card-title {
+        font-size: 11px;
+    }
+
+    .card-subtitle {
+        font-size: 9px;
+    }
+
+    .tagline {
+        letter-spacing: 3px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+<div class="background-glow glow-one"></div>
+<div class="background-glow glow-two"></div>
+
+<div class="container">
+
+    <header class="brand">
+        <div class="crown">♛</div>
+        <div class="logo">GT</div>
+        <div class="brand-name">Getmodtool</div>
+        <div class="tagline">FAST · SAFE · TRUSTED</div>
+
+        <div class="top-live">
+            <span class="top-live-dot"></span>
+            LIVE DASHBOARD
+        </div>
+    </header>
+
+    <main class="dashboard">
+
+        <!-- AUTO PERIOD -->
+
+        <section class="period-box">
+            <div class="section-heading">
+                <div class="heading-icon">◷</div>
+                <span>LIVE PERIOD NUMBER</span>
+            </div>
+
+            <div id="periodNumber" class="period-number">
+                Loading period...
+            </div>
+
+            <div class="live-timer">
+                <span class="live-label">
+                    <span class="live-dot"></span>
+                    NEXT PERIOD IN
+                </span>
+                <span id="liveTimer">00 : 60</span>
+            </div>
+        </section>
+
+        <!-- STATUS -->
+
+        <div class="api-status">
+            <div class="api-line"></div>
+            <div class="api-badge">
+                <span class="api-dot"></span>
+                <span id="apiStatus">READY</span>
+            </div>
+            <div class="api-line"></div>
+        </div>
+
+        <!-- RESULT -->
+
+        <section class="result-box">
+            <div class="section-title">RESULT</div>
+
+            <div class="result-circle">
+                <div class="result-number" id="resultNumber">—</div>
+            </div>
+
+            <div class="result-color" id="resultColor">
+                WAITING
+            </div>
+        </section>
+
+        <!-- REFERENCE -->
+
+        <section class="color-grid">
+
+            <div class="color-card">
+                <div class="ball"></div>
+                <div>
+                    <div class="card-title">RED</div>
+                    <div class="card-subtitle">2, 4, 6, 8</div>
+                </div>
+            </div>
+
+            <div class="color-card">
+                <div class="ball"></div>
+                <div>
+                    <div class="card-title">GREEN</div>
+                    <div class="card-subtitle">1, 3, 7, 9</div>
+                </div>
+            </div>
+
+            <div class="color-card">
+                <div class="ball"></div>
+                <div>
+                    <div class="card-title">0</div>
+                    <div class="card-subtitle">RED + VIOLET</div>
+                </div>
+            </div>
+
+            <div class="color-card">
+                <div class="ball"></div>
+                <div>
+                    <div class="card-title">5</div>
+                    <div class="card-subtitle">GREEN + VIOLET</div>
+                </div>
+            </div>
+
+        </section>
+
+        <button
+            class="result-button"
+            id="resultButton"
+            onclick="getResult()"
+        >
+            ⚡ GET RESULT
+        </button>
+
+        <footer class="footer">
+            <div><span>ⓘ</span> One result is available for each live period.</div>
+            <div class="demo-label">
+                DEMO INTERFACE · NOT A LIVE PREDICTION
+            </div>
+        </footer>
+
+    </main>
+</div>
+
+<script>
+/* =================================
+   AUTOMATIC LIVE PERIOD
+================================= */
+
+let currentPeriod = "";
+let generatedPeriod = "";
+
+function updateLivePeriod() {
+    const now = new Date();
+
+    const seconds = now.getUTCSeconds();
+    const remainingSeconds = 60 - seconds;
+    const totalMinutes =
+        now.getUTCHours() * 60 + now.getUTCMinutes();
+
+    const year = now.getUTCFullYear();
+    const month = String(now.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(now.getUTCDate()).padStart(2, "0");
+
+    const datePart = `${year}${month}${day}`;
+    const period =
+        datePart + "1000" + String(10001 + totalMinutes);
+
+    const periodDisplay = document.getElementById("periodNumber");
+    const timerDisplay = document.getElementById("liveTimer");
+    const button = document.getElementById("resultButton");
+    const apiStatus = document.getElementById("apiStatus");
+
+    if (period !== currentPeriod) {
+        currentPeriod = period;
+        generatedPeriod = "";
+
+        document.getElementById("resultNumber").innerText = "—";
+
+        const color = document.getElementById("resultColor");
+        color.innerText = "WAITING";
+
+        button.disabled = false;
+        button.innerHTML = "⚡ GET RESULT";
+        apiStatus.innerText = "READY";
+    }
+
+    periodDisplay.textContent = period;
+
+    timerDisplay.textContent =
+        `00 : ${String(remainingSeconds).padStart(2, "0")}`;
+}
+
+/* =================================
+   ONE RESULT PER PERIOD
+================================= */
+
+function getResult() {
+    const resultNumber = document.getElementById("resultNumber");
+    const resultColor = document.getElementById("resultColor");
+    const apiStatus = document.getElementById("apiStatus");
+    const button = document.getElementById("resultButton");
+
+    if (!currentPeriod) {
+        apiStatus.innerText = "WAITING FOR PERIOD";
+        return;
+    }
+
+    if (generatedPeriod === currentPeriod) {
+        apiStatus.innerText = "RESULT ALREADY GENERATED";
+        return;
+    }
+
+    generatedPeriod = currentPeriod;
+
+    button.disabled = true;
+    button.innerHTML = "✓ RESULT GENERATED";
+    apiStatus.innerText = "DEMO MODE";
+
+    // Existing demo result logic
+    const number = Math.floor(Math.random() * 10);
+
+    resultNumber.innerText = number;
+
+    if (number === 0) {
+        resultColor.innerText = "RED + VIOLET";
+    } else if (number === 5) {
+        resultColor.innerText = "GREEN + VIOLET";
+    } else if ([2, 4, 6, 8].includes(number)) {
+        resultColor.innerText = "RED";
+    } else {
+        resultColor.innerText = "GREEN";
+    }
+}
+
+/* =================================
+   LIVE PARTICLE NETWORK
+================================= */
+
+(function () {
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+
+    let particles = [];
+    let width = 0;
+    let height = 0;
+    let animationFrame;
+
+    const reduceMotion =
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function resizeCanvas() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        width = window.innerWidth;
+        height = window.innerHeight;
+
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        createParticles();
+    }
+
+    function createParticles() {
+        const count = Math.min(
+            65,
+            Math.max(25, Math.floor((width * height) / 15000))
+        );
+
+        particles = [];
+
+        for (let i = 0; i < count; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - .5) * .35,
+                vy: (Math.random() - .5) * .35,
+                radius: Math.random() * 1.8 + .5,
+                alpha: Math.random() * .5 + .2
+            });
+        }
+    }
+
+    function drawParticles() {
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+
+            if (!reduceMotion) {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > width) p.vx *= -1;
+                if (p.y < 0 || p.y > height) p.vy *= -1;
+            }
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+            ctx.shadowBlur = 9;
+            ctx.shadowColor = "#ffffff";
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            for (let j = i + 1; j < particles.length; j++) {
+                const other = particles[j];
+
+                const dx = p.x - other.x;
+                const dy = p.y - other.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 115) {
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(other.x, other.y);
+
+                    ctx.strokeStyle =
+                        `rgba(255,255,255,${(1 - distance / 115) * .16})`;
+
+                    ctx.lineWidth = .6;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        if (!reduceMotion) {
+            animationFrame = requestAnimationFrame(drawParticles);
+        }
+    }
+
+    resizeCanvas();
+    drawParticles();
+
+    window.addEventListener("resize", function () {
+        cancelAnimationFrame(animationFrame);
+        resizeCanvas();
+        drawParticles();
+    });
+})();
+
+/* START */
+
+updateLivePeriod();
+setInterval(updateLivePeriod, 1000);
+
+</script>
+
+</body>
+</html>
